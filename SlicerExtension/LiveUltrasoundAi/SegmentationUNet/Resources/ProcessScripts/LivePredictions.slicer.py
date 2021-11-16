@@ -2,6 +2,7 @@ import pickle
 import sys
 import numpy as np
 import traceback
+from os.path import expanduser
 from PIL import Image
 
 import tensorflow as tf
@@ -15,7 +16,11 @@ NOT_ACTIVE = bytes([0])
 # Here is an example how to print debug info in the log file:
 # f.write("resizeInputArray, input_array shape: {}\n".format(input_array.shape))
 
-f = open(r"LivePredictionsLog.txt", "a")
+# The original code creates a log file in the current directly where Slicer has been launched.
+# However, it causes an error when 3D Slicer is launched from a launcher on Mac.
+# This error can be avoided by opening a log file under the home folder.
+home = expanduser("~")
+f = open(home + r"/LivePredictionsLog.txt", "a")
 
 def resizeInputArray(input_array):
   """
